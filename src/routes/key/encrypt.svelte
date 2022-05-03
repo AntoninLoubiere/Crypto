@@ -12,5 +12,5 @@
 <div class="m-4">
     <textarea bind:value={text} class="form-textarea w-full" />
     <button on:click={onEncryptButton}>Chiffrer</button>
-    <p class="whitespace-pre font-mono">{cipher}</p>
+    <p class="whitespace-pre-line font-mono">{cipher}</p>
 </div>

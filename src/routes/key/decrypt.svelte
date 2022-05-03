@@ -9,6 +9,6 @@
     }
 </script>
 
-<textarea bind:value={cipher} class="w-full" />
+<textarea bind:value={cipher} class="w-full font-mono" />
 <button on:click={onDecryptButton}>Déchiffrer</button>
 <p>{text}</p>

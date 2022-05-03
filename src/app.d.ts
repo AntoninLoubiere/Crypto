@@ -15,4 +15,5 @@ interface CryptoKeyDB {
     privateKey?: CryptoKey;
     secretKey?: CryptoKey;
     password: 'none' | 'master' | 'unique';
+    keyId?: number;
 }

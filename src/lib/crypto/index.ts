@@ -1,13 +1,10 @@
 import { getDataBase } from '$lib/database';
 import { base64DecToArr, base64EncArr } from '$lib/utils';
 
-let currentKey: {
-    id: number;
-    key: CryptoKeyDB;
-};
+let currentKey: CryptoKeyDB;
 
 export async function getKey(keyId: number) {
-    if (currentKey?.id == keyId) return currentKey.key;
+    if (currentKey?.keyId == keyId) return currentKey;
 
     const database = await getDataBase();
 
@@ -27,14 +24,13 @@ export async function getKey(keyId: number) {
         key = {
             name: 'test',
             password: 'none',
+            keyId,
             ...cryptoKey,
         };
-        database.put('cryptoKeys', key, keyId);
+        console.log(key, keyId);
+        database.add('cryptoKeys', key);
     }
-    currentKey = {
-        id: keyId,
-        key,
-    };
+    currentKey = key;
     return key;
 }
 

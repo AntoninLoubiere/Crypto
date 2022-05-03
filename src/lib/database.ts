@@ -17,7 +17,10 @@ export async function getDataBase() {
         database = await openDB<DB>('crypto-db', DB_VERSION, {
             upgrade(db, originalVersion) {
                 if (originalVersion < 1) {
-                    db.createObjectStore('cryptoKeys');
+                    db.createObjectStore('cryptoKeys', {
+                        keyPath: 'keyId',
+                        autoIncrement: true,
+                    });
                 }
             },
         });
