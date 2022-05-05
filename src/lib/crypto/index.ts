@@ -1,7 +1,12 @@
 import { getDataBase } from '$lib/database';
 import { base64DecToArr, base64EncArr } from '$lib/utils';
+import RSA_OAEP from './rsa';
+import { CryptoError } from './utils';
+// import AES from './aes';
 
 let currentKey: CryptoKeyDB;
+
+const ALGORITHMS = new Map<string, CryptoMethods>([['RSA-OAEP', RSA_OAEP]]);
 
 export async function getKey(keyId: number) {
     if (currentKey?.keyId == keyId) return currentKey;
@@ -10,25 +15,7 @@ export async function getKey(keyId: number) {
 
     let key = await database.get('cryptoKeys', keyId);
     if (!key) {
-        console.info('Generate key');
-        const cryptoKey = await crypto.subtle.generateKey(
-            {
-                name: 'RSA-OAEP',
-                modulusLength: 4096,
-                publicExponent: new Uint8Array([1, 0, 1]),
-                hash: 'SHA-256',
-            },
-            true,
-            ['encrypt', 'decrypt']
-        );
-        key = {
-            name: 'test',
-            password: 'none',
-            keyId,
-            ...cryptoKey,
-        };
-        console.log(key, keyId);
-        database.add('cryptoKeys', key);
+        key = await generateKey('RSA-OAEP', 'Test', { keyId });
     }
     currentKey = key;
     return key;
@@ -44,26 +31,61 @@ export async function getDecodeKey(keyId: number) {
     return key.privateKey || key.secretKey;
 }
 
-export async function encrypt(text: string, keyId: number): Promise<string> {
-    const key = await getEncryptKey(keyId);
-    if (!key || !key.usages.includes('encrypt')) {
-        return '';
+export async function encrypt(text: string, keyId: number, options?: unknown): Promise<string> {
+    const key = await getKey(keyId);
+    if (!key) {
+        throw new CryptoError('key_missing', `Unable to get the key ${keyId}`);
     }
+    const algo = ALGORITHMS.get(key.algorithm);
+    if (!algo) {
+        throw new CryptoError(
+            'algorithm_unknown',
+            `The algorithm ${key.algorithm} is unknown. Only ${Array.from(
+                ALGORITHMS.keys()
+            )} are valid.`
+        );
+    }
+
     const encoder = new TextEncoder();
     const encodedText = encoder.encode(text);
 
-    const cipher: ArrayBuffer = await crypto.subtle.encrypt(key.algorithm, key, encodedText);
-    return base64EncArr(new Uint8Array(cipher));
+    const cipher = await algo.encrypt(key, encodedText, options);
+    return base64EncArr(cipher);
 }
 
 export async function decrypt(cipher: string, keyId: number) {
-    const key = await getDecodeKey(keyId);
-    if (!key || !key.usages.includes('decrypt')) {
-        return '';
+    const key = await getKey(keyId);
+    if (!key) {
+        throw new CryptoError('key_missing', `Unable to get the key ${keyId}`);
+    }
+    const algo = ALGORITHMS.get(key.algorithm);
+    if (!algo) {
+        throw new CryptoError(
+            'algorithm_unknown',
+            `The algorithm ${key.algorithm} is unknown. Only ${Array.from(
+                ALGORITHMS.keys()
+            )} are valid.`
+        );
     }
 
-    const data = base64DecToArr(cipher);
-    const encodedText = await crypto.subtle.decrypt(key.algorithm, key, data);
     const decoder = new TextDecoder();
-    return decoder.decode(encodedText);
+    return decoder.decode(await algo.decrypt(key, base64DecToArr(cipher)));
+}
+
+export async function generateKey(algorithm: string, name: string, options?: unknown) {
+    const algo = ALGORITHMS.get(algorithm);
+    if (!algo) {
+        throw new CryptoError(
+            'algorithm_unknown',
+            `The algorithm ${algorithm} is unknown. Only ${Array.from(
+                ALGORITHMS.keys()
+            )} are valid.`
+        );
+    }
+    console.info('Generate key');
+
+    const key = await algo.generateKey(name, options);
+    (await getDataBase()).add('cryptoKeys', key);
+
+    return key;
 }

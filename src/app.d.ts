@@ -11,9 +11,16 @@ declare namespace App {
 
 interface CryptoKeyDB {
     name: string;
+    algorithm: string;
     publicKey?: CryptoKey;
     privateKey?: CryptoKey;
     secretKey?: CryptoKey;
     password: 'none' | 'master' | 'unique';
     keyId?: number;
+}
+
+interface CryptoMethods {
+    encrypt(key: CryptoKeyDB, encodedText: Uint8Array, options?): Promise<Uint8Array>;
+    decrypt(key: CryptoKeyDB, cipher: Uint8Array): Promise<Uint8Array>;
+    generateKey(name: string, options?): Promise<CryptoKeyDB>;
 }
