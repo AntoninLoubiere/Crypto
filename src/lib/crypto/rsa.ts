@@ -87,6 +87,23 @@ const methods: CryptoMethods = {
             keyId: 2,
         };
     },
+
+    isCompatible(key: CryptoKeyDB, usage: KeyUsage) {
+        switch (usage) {
+            case 'encrypt':
+            case 'verify':
+            case 'wrapKey':
+                return key.publicKey?.usages.includes(usage) ?? false;
+
+            case 'sign':
+            case 'decrypt':
+            case 'unwrapKey':
+                return key.privateKey?.usages.includes(usage) ?? false;
+
+            default:
+                return false;
+        }
+    },
 };
 
 export default methods;

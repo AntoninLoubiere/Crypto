@@ -4,6 +4,17 @@ import RSA_OAEP from './rsa';
 import { CryptoError } from './utils';
 // import AES from './aes';
 
+const KEY_USAGE = [
+    'decrypt',
+    'deriveBits',
+    'deriveKey',
+    'encrypt',
+    'sign',
+    'unwrapKey',
+    'verify',
+    'wrapKey',
+];
+
 let currentKey: CryptoKeyDB;
 
 const ALGORITHMS = new Map<string, CryptoMethods>([['RSA-OAEP', RSA_OAEP]]);
@@ -19,16 +30,6 @@ export async function getKey(keyId: number) {
     }
     currentKey = key;
     return key;
-}
-
-export async function getEncryptKey(keyId: number) {
-    const key = await getKey(keyId);
-    return key.publicKey || key.secretKey;
-}
-
-export async function getDecodeKey(keyId: number) {
-    const key = await getKey(keyId);
-    return key.privateKey || key.secretKey;
 }
 
 export async function encrypt(text: string, keyId: number, options?: unknown): Promise<string> {
@@ -88,4 +89,21 @@ export async function generateKey(algorithm: string, name: string, options?: unk
     (await getDataBase()).add('cryptoKeys', key);
 
     return key;
+}
+
+export function isCompatible(key: CryptoKeyDB, usage: KeyUsage) {
+    const algo = ALGORITHMS.get(key.algorithm);
+    if (!algo) {
+        throw new CryptoError(
+            'algorithm_unknown',
+            `The algorithm ${key.algorithm} is unknown. Only ${Array.from(
+                ALGORITHMS.keys()
+            )} are valid.`
+        );
+    }
+    return algo.isCompatible(key, usage);
+}
+
+export function isUsage(usage: string): usage is KeyUsage {
+    return KEY_USAGE.includes(usage);
 }

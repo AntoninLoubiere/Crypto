@@ -27,13 +27,19 @@
 </script>
 
 <script lang="ts">
+    import UsageNavButton from '$lib/components/UsageNavButton.svelte';
+
     export let key: CryptoKeyDB | undefined;
 </script>
 
-<nav>
-    <a href="/">Retour</a>
-    <a href="/key/encrypt?key={key?.keyId}">Chiffrer</a>
-    <a href="/key/decrypt?key={key?.keyId}">Déchiffrer</a>
-</nav>
-<div>Key: {key?.name}</div>
+<div class="p-2 grid grid-cols-3 bg-primary-200 items-center">
+    <span>Clé: {key?.name}</span>
+    <nav class="flex justify-center gap-2 justify-items-center">
+        <UsageNavButton {key} usage="">Informations</UsageNavButton>
+        <UsageNavButton {key} usage="encrypt">Chiffrer</UsageNavButton>
+        <UsageNavButton {key} usage="decrypt">Déchiffrer</UsageNavButton>
+        <UsageNavButton {key} usage="sign">Signer</UsageNavButton>
+        <UsageNavButton {key} usage="verify">Vérifier</UsageNavButton>
+    </nav>
+</div>
 <slot />
