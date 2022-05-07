@@ -14,6 +14,6 @@
 
 <style>
     .active {
-        @apply text-white bg-primary rounded-lg;
+        @apply text-white bg-primary dark:bg-primary-800 rounded-lg;
     }
 </style>

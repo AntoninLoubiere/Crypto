@@ -18,10 +18,12 @@
     import '../app.css';
 </script>
 
-<header class="bg-primary text-white grid grid-cols-3">
+<header class="bg-primary dark:bg-primary-800 text-white grid grid-cols-3">
     <div class="m-2">Crypto</div>
     {#if $page.url.pathname != '/'}
-        <a href="/" class="px-4 py-2 justify-self-center hover:bg-white hover:text-primary"
+        <a
+            href="/"
+            class="px-4 py-2 justify-self-center hover:bg-white hover:text-primary dark:hover:bg-gray-900"
             >VOS CLÉS</a
         >
     {/if}

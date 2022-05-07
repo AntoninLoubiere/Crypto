@@ -32,7 +32,7 @@
     export let key: CryptoKeyDB | undefined;
 </script>
 
-<div class="p-2 grid grid-cols-3 bg-primary-200 items-center">
+<div class="p-2 grid grid-cols-3 bg-primary-200 items-center dark:bg-gray-800">
     <span>Clé: {key?.name}</span>
     <nav class="flex justify-center gap-2 justify-items-center">
         <UsageNavButton {key} usage="">Informations</UsageNavButton>
@@ -42,4 +42,8 @@
         <UsageNavButton {key} usage="verify">Vérifier</UsageNavButton>
     </nav>
 </div>
-<slot />
+<div class="m-4 my-2">
+    <div class="max-w-3xl mx-auto">
+        <slot />
+    </div>
+</div>

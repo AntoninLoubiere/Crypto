@@ -1,0 +1,68 @@
+<script lang="ts" context="module">
+    import type { LoadInput, LoadOutput } from '@sveltejs/kit';
+
+    export async function load({ stuff }: LoadInput): Promise<LoadOutput> {
+        return {
+            props: { key: stuff.key },
+        };
+    }
+</script>
+
+<script lang="ts">
+    import CryptoKeyInfo from '$lib/components/CryptoKeyInfo.svelte';
+    import { getDataBase } from '$lib/database';
+    import { goto } from '$app/navigation';
+    import DateFormater from '$lib/components/DateFormater.svelte';
+
+    export let key: CryptoKeyDB | undefined;
+
+    async function removeKey() {
+        if (key?.keyId != undefined) {
+            const db = await getDataBase();
+            await db.delete('cryptoKeys', key.keyId);
+
+            goto('/');
+        }
+    }
+</script>
+
+<svelte:head>
+    <title>Clé {key?.name.substring(0, 30)}{(key?.name.length || 0) > 30 ? '…' : ''} - Crypto</title
+    >
+</svelte:head>
+
+<div class="group relative">
+    <h1 class="text-center h1">{key?.name}</h1>
+    <!-- TODO -->
+    <button class="absolute top-0 bottom-0 right-1 hidden group-hover:block">Modifier</button>
+</div>
+
+<div>
+    <span class="font-bold">Date de création :</span>
+    <DateFormater date={key?.creationDate} options={{ dateStyle: 'long', timeStyle: 'short' }} />
+</div>
+
+<div>
+    <span class="font-bold">Dernière utilisation :</span>
+    <DateFormater date={key?.useDate} options={{ dateStyle: 'long', timeStyle: 'short' }} />
+</div>
+
+<div>
+    <span class="font-bold">Algorithme :</span>
+    {key?.algorithm}
+</div>
+
+<div>
+    <span class="font-bold">Exportable :</span>
+    {(key?.publicKey || key?.secretKey || key?.privateKey)?.extractable ? 'Oui' : 'Non'}
+</div>
+
+<div class="flex flex-col justify-center gap-4 my-2 md:flex-row">
+    <CryptoKeyInfo {key} type="secret" />
+    <CryptoKeyInfo {key} type="public" />
+    <CryptoKeyInfo {key} type="private" />
+</div>
+
+<button class="button-coloured bg-red-500 ring-red-500 w-full" on:click={removeKey}
+    >Supprimer la clé</button
+>

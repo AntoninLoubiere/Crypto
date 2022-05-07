@@ -32,11 +32,7 @@ export async function getKey(keyId: number) {
     return key;
 }
 
-export async function encrypt(text: string, keyId: number, options?: unknown): Promise<string> {
-    const key = await getKey(keyId);
-    if (!key) {
-        throw new CryptoError('key_missing', `Unable to get the key ${keyId}`);
-    }
+export async function encrypt(text: string, key: CryptoKeyDB, options?: unknown): Promise<string> {
     const algo = ALGORITHMS.get(key.algorithm);
     if (!algo) {
         throw new CryptoError(
@@ -51,14 +47,11 @@ export async function encrypt(text: string, keyId: number, options?: unknown): P
     const encodedText = encoder.encode(text);
 
     const cipher = await algo.encrypt(key, encodedText, options);
+    registerKeyUse(key);
     return base64EncArr(cipher);
 }
 
-export async function decrypt(cipher: string, keyId: number) {
-    const key = await getKey(keyId);
-    if (!key) {
-        throw new CryptoError('key_missing', `Unable to get the key ${keyId}`);
-    }
+export async function decrypt(cipher: string, key: CryptoKeyDB) {
     const algo = ALGORITHMS.get(key.algorithm);
     if (!algo) {
         throw new CryptoError(
@@ -70,7 +63,9 @@ export async function decrypt(cipher: string, keyId: number) {
     }
 
     const decoder = new TextDecoder();
-    return decoder.decode(await algo.decrypt(key, base64DecToArr(cipher)));
+    const encodedText = await algo.decrypt(key, base64DecToArr(cipher));
+    registerKeyUse(key);
+    return decoder.decode(encodedText);
 }
 
 export async function generateKey(algorithm: string, name: string, options?: unknown) {
@@ -106,4 +101,10 @@ export function isCompatible(key: CryptoKeyDB, usage: KeyUsage) {
 
 export function isUsage(usage: string): usage is KeyUsage {
     return KEY_USAGE.includes(usage);
+}
+
+async function registerKeyUse(key: CryptoKeyDB) {
+    const db = await getDataBase();
+    key.useDate = new Date();
+    await db.put('cryptoKeys', key);
 }

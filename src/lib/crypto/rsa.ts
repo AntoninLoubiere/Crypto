@@ -66,7 +66,7 @@ const methods: CryptoMethods = {
             password: 'none' | 'master' | 'unique';
             usages: KeyUsage[];
         }
-    ) {
+    ): Promise<CryptoKeyDB> {
         const cryptoKey = await crypto.subtle.generateKey(
             {
                 name: 'RSA-OAEP',
@@ -85,6 +85,8 @@ const methods: CryptoMethods = {
             privateKey: cryptoKey.privateKey,
             publicKey: cryptoKey.publicKey,
             keyId: 2,
+            creationDate: new Date(),
+            useDate: new Date(),
         };
     },
 
