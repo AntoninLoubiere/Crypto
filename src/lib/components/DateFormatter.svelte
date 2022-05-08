@@ -7,7 +7,7 @@
         : 'en-EN';
     export let options: Intl.DateTimeFormatOptions | undefined = undefined;
 
-    const formater = new Intl.DateTimeFormat(locales, options);
+    const formatter = new Intl.DateTimeFormat(locales, options);
 </script>
 
-{formater.format(date)}
+{formatter.format(date)}

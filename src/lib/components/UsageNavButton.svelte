@@ -9,7 +9,12 @@
 </script>
 
 {#if key && (!isUsage(usage) || isCompatible(key, usage))}
-    <a href="/key/{usage}?key={key.keyId}" class="uppercase px-2 py-1" class:active><slot /></a>
+    <a
+        sveltekit:prefetch
+        href="/key/{usage}?key={key.keyId}"
+        class="uppercase px-2 py-1"
+        class:active><slot /></a
+    >
 {/if}
 
 <style>

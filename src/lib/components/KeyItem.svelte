@@ -1,20 +1,25 @@
 <script lang="ts">
+    import KeyItemChips from './KeyItemChips.svelte';
+
     export let key: CryptoKeyDB;
 </script>
 
-<a href="/key/?key={key.keyId}">
-    <div>
-        <h3>
-            {key.name}
-            {#if key.secretKey}
-                Secret
-            {/if}
-            {#if key.publicKey}
-                Clé publique
-            {/if}
-            {#if key.privateKey}
-                Clé privée
-            {/if}
-        </h3>
-    </div>
+<a
+    sveltekit:prefetch
+    href="/key/?key={key.keyId}"
+    class="px-3 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 last:rounded-b-xl flex flex-wrap
+            items-center gap-2"
+>
+    <h3 class="h3 inline text-ellipsis overflow-hidden max-w-full whitespace-nowrap">
+        {key.name}
+    </h3>
+    {#if key.secretKey}
+        <KeyItemChips color="green">Secret</KeyItemChips>
+    {/if}
+    {#if key.publicKey}
+        <KeyItemChips color="blue">Clé publique</KeyItemChips>
+    {/if}
+    {#if key.privateKey}
+        <KeyItemChips color="red">Clé privée</KeyItemChips>
+    {/if}
 </a>

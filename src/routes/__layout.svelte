@@ -22,6 +22,7 @@
     <div class="m-2">Crypto</div>
     {#if $page.url.pathname != '/'}
         <a
+            sveltekit:prefetch
             href="/"
             class="px-4 py-2 justify-self-center hover:bg-white hover:text-primary dark:hover:bg-gray-900"
             >VOS CLÉS</a

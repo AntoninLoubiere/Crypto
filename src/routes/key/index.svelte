@@ -12,7 +12,8 @@
     import CryptoKeyInfo from '$lib/components/CryptoKeyInfo.svelte';
     import { getDataBase } from '$lib/database';
     import { goto } from '$app/navigation';
-    import DateFormater from '$lib/components/DateFormater.svelte';
+    import DateFormatter from '$lib/components/DateFormatter.svelte';
+    import RelativeDateFormatter from '$lib/components/RelativeDateFormatter.svelte';
 
     export let key: CryptoKeyDB | undefined;
 
@@ -39,12 +40,21 @@
 
 <div>
     <span class="font-bold">Date de création :</span>
-    <DateFormater date={key?.creationDate} options={{ dateStyle: 'long', timeStyle: 'short' }} />
+    <RelativeDateFormatter
+        dateTo={key?.creationDate || new Date()}
+        options={{ intl: { numeric: 'auto' } }}
+    /> (<DateFormatter
+        date={key?.creationDate}
+        options={{ dateStyle: 'long', timeStyle: 'short' }}
+    />)
 </div>
 
 <div>
     <span class="font-bold">Dernière utilisation :</span>
-    <DateFormater date={key?.useDate} options={{ dateStyle: 'long', timeStyle: 'short' }} />
+    <RelativeDateFormatter
+        dateTo={key?.useDate || new Date()}
+        options={{ intl: { numeric: 'auto' } }}
+    /> (<DateFormatter date={key?.useDate} options={{ dateStyle: 'long', timeStyle: 'short' }} />)
 </div>
 
 <div>

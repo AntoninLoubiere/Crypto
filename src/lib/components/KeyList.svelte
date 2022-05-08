@@ -16,6 +16,11 @@
     loadKeys();
 </script>
 
-{#each keys as key}
-    <KeyItem {key} />
-{/each}
+<div class="m-2">
+    <div class="pt-1 m-auto max-w-2xl bg-gray-100 dark:bg-gray-800 rounded-xl">
+        <h1 class="h1 text-center my-2">Vos clés</h1>
+        {#each keys as key}
+            <KeyItem {key} />
+        {/each}
+    </div>
+</div>

@@ -31,6 +31,6 @@
     }
 
     .textarea {
-        @apply form-textarea dark:bg-gray-800 rounded-lg rounded-br-none;
+        @apply form-textarea focus:ring-primary dark:bg-gray-800 rounded-lg rounded-br-none;
     }
 }
