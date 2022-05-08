@@ -5,6 +5,11 @@ export class CryptoError extends Error {
     }
 }
 
+export const PEM_START_BEACON = '-----BEGIN PRIVATE KEY-----\n';
+export const PEM_END_BEACON = '\n-----END PRIVATE KEY-----';
+export const SPKI_START_BEACON = '-----BEGIN PUBLIC KEY-----\n';
+export const SPKI_END_BEACON = '\n-----END PUBLIC KEY-----';
+
 export function verifyKey(
     key: CryptoKey | undefined,
     usage: KeyUsage,

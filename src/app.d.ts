@@ -24,6 +24,7 @@ interface CryptoKeyDB {
 }
 
 interface CryptoMethods {
+    exportKey(key: CryptoKey): Promise<string>;
     encrypt(key: CryptoKeyDB, encodedText: Uint8Array, options?): Promise<Uint8Array>;
     decrypt(key: CryptoKeyDB, cipher: Uint8Array): Promise<Uint8Array>;
     generateKey(name: string, options?): Promise<CryptoKeyDB>;

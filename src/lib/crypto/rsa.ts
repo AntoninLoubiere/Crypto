@@ -1,5 +1,15 @@
+import { base64EncArr } from '$lib/utils';
 import { decryptDataRandomAES, encryptDataRandomAES } from './aes';
-import { mergeArraysFlags, splitArraysFlags, verifyKey } from './utils';
+import {
+    CryptoError,
+    mergeArraysFlags,
+    PEM_END_BEACON,
+    PEM_START_BEACON,
+    SPKI_END_BEACON,
+    SPKI_START_BEACON,
+    splitArraysFlags,
+    verifyKey,
+} from './utils';
 
 const methods: CryptoMethods = {
     async encrypt(
@@ -88,6 +98,17 @@ const methods: CryptoMethods = {
             creationDate: new Date(),
             useDate: new Date(),
         };
+    },
+
+    async exportKey(key: CryptoKey): Promise<string> {
+        if (key.type == 'public') {
+            const keyExported = await crypto.subtle.exportKey('spki', key);
+            return SPKI_START_BEACON + base64EncArr(new Uint8Array(keyExported)) + SPKI_END_BEACON;
+        } else if (key.type == 'private') {
+            const keyExported = await crypto.subtle.exportKey('pkcs8', key);
+            return PEM_START_BEACON + base64EncArr(new Uint8Array(keyExported)) + PEM_END_BEACON;
+        }
+        throw new CryptoError('wrong_key', "This algorithm doesn't support this key type.", 'RSA');
     },
 
     isCompatible(key: CryptoKeyDB, usage: KeyUsage) {

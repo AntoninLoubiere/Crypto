@@ -22,7 +22,11 @@
         @apply my-2 py-1 px-2 uppercase font-semibold outline-none rounded-md ring-primary
             focus-visible:ring
             hover:filter hover:brightness-110
-            active:brightness-90;
+            active:brightness-90
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            disabled:hover:brightness-100
+            disabled:active:brightness-100;
     }
 
     .button-coloured {

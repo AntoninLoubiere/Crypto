@@ -37,6 +37,7 @@
     "type": "module",
     "dependencies": {
         "@tailwindcss/forms": "^0.5.0",
-        "idb": "^7.0.1"
+        "idb": "^7.0.1",
+        "svelte-hmr": "^0.14.11"
     }
 }

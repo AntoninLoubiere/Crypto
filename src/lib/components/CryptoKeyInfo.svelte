@@ -1,4 +1,8 @@
 <script lang="ts">
+    import ExportModal from './ExportModal.svelte';
+
+    ('@hmr:keep-all');
+
     export let key: CryptoKeyDB | undefined;
     export let type: KeyType;
 
@@ -18,6 +22,7 @@
     };
 
     const listFormatter = new Intl.ListFormat();
+    let exportModalOpened = false;
 </script>
 
 {#if cryptoKey}
@@ -30,10 +35,14 @@
             {listFormatter.format(cryptoKey.usages.map((value) => TRANSLATED_TYPE[value]))}
         </div>
         {#if cryptoKey.extractable}
-            <button class="button-coloured w-full">Exporter</button>
+            <button class="button-coloured w-full" on:click={() => (exportModalOpened = true)}
+                >Exporter</button
+            >
         {/if}
         {#if type == 'private'}
             <button class="button-coloured w-full bg-red-500 ring-red-500">Supprimer</button>
         {/if}
     </div>
+
+    <ExportModal {cryptoKey} bind:exportModalOpened />
 {/if}
