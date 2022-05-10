@@ -22,7 +22,7 @@
             const db = await getDataBase();
             await db.delete('cryptoKeys', key.keyId);
 
-            goto('/');
+            goto('/Crypto');
         }
     }
 </script>
