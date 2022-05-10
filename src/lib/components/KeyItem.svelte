@@ -7,8 +7,8 @@
 <a
     sveltekit:prefetch
     href="/Crypto/key/?key={key.keyId}"
-    class="flex flex-wrap items-center gap-2 px-3 py-2 last:rounded-b-xl
-            hover:bg-gray-300 dark:hover:bg-gray-600"
+    class="flex flex-wrap items-center gap-2 px-3 py-2 hover:bg-gray-300
+                group-last:rounded-b-xl dark:hover:bg-gray-600"
 >
     <h3 class="h3 inline max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
         {key.name}

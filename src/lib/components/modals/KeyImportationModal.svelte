@@ -77,7 +77,7 @@
                 disabled={!isValid || importationInProgress}
                 on:click={_importKey}>Importer</button
             >
-            <button class="button-text">Annuler</button>
+            <button class="button-text" on:click={() => (opened = false)}>Annuler</button>
         </div>
     </div>
 </Modal>
