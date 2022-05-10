@@ -24,10 +24,15 @@ interface CryptoKeyDB {
 }
 
 interface CryptoMethods {
+    generateKey(name: string, options?): Promise<CryptoKeyDB>;
+    importKey(
+        keys: { key: string; privateKey?: string | undefined },
+        name: string,
+        options?
+    ): Promise<CryptoKeyDB>;
     exportKey(key: CryptoKey): Promise<string>;
     encrypt(key: CryptoKeyDB, encodedText: Uint8Array, options?): Promise<Uint8Array>;
     decrypt(key: CryptoKeyDB, cipher: Uint8Array): Promise<Uint8Array>;
-    generateKey(name: string, options?): Promise<CryptoKeyDB>;
     isCompatible(key: CryptoKeyDB, usage: KeyUsage): boolean;
 }
 

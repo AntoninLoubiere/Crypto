@@ -1,3 +1,5 @@
+import { base64DecToArr } from '$lib/utils';
+
 export class CryptoError extends Error {
     constructor(reason: string, message: string, algorithm?: string) {
         super((algorithm ? algorithm + ' - ' : '') + reason + ' - ' + message);
@@ -134,4 +136,19 @@ export function splitArrays(data: Uint8Array): Uint8Array[] {
 function numberBits(n: number): number {
     if (!n) return 1;
     return Math.floor(Math.log2(n) + 1);
+}
+
+export function decodePEMAndSPKIFormats(type: 'pem' | 'spki', data: string) {
+    const startBeacon = type == 'pem' ? PEM_START_BEACON.trim() : SPKI_START_BEACON.trim();
+    const endBeacon = type == 'pem' ? PEM_END_BEACON.trim() : SPKI_END_BEACON.trim();
+
+    const startIndex = data.search(startBeacon);
+    const endIndex = data.search(endBeacon);
+    if (startIndex < 0 || endIndex < 0) {
+        throw new CryptoError(
+            'malformed_data',
+            `The key given is malformed and does not meet the requirements of ${type} encoding.`
+        );
+    }
+    return base64DecToArr(data.substring(startIndex + startBeacon.length, endIndex));
 }

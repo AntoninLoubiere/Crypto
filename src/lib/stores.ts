@@ -1,10 +1,4 @@
-import {
-    readable,
-    writable,
-    type Readable,
-    type StartStopNotifier,
-    type Writable,
-} from 'svelte/store';
+import { writable, type Readable, type StartStopNotifier, type Writable } from 'svelte/store';
 
 export function autoResetStore<T>(
     baseValue: T,

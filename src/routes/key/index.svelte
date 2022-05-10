@@ -33,7 +33,7 @@
 </svelte:head>
 
 <div class="group relative">
-    <h1 class="text-center h1">{key?.name}</h1>
+    <h1 class="h1 text-center">{key?.name}</h1>
     <!-- TODO -->
     <button class="absolute top-0 bottom-0 right-1 hidden group-hover:block">Modifier</button>
 </div>
@@ -67,12 +67,12 @@
     {(key?.publicKey || key?.secretKey || key?.privateKey)?.extractable ? 'Oui' : 'Non'}
 </div>
 
-<div class="flex flex-col justify-center gap-4 my-2 md:flex-row">
+<div class="my-2 flex flex-col justify-center gap-4 md:flex-row">
     <CryptoKeyInfo {key} type="secret" />
     <CryptoKeyInfo {key} type="public" />
     <CryptoKeyInfo {key} type="private" />
 </div>
 
-<button class="button-coloured bg-red-500 ring-red-500 w-full" on:click={removeKey}
+<button class="button-coloured w-full bg-red-500 ring-red-500" on:click={removeKey}
     >Supprimer la clé</button
 >

@@ -7,10 +7,10 @@
 <a
     sveltekit:prefetch
     href="/key/?key={key.keyId}"
-    class="px-3 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 last:rounded-b-xl flex flex-wrap
-            items-center gap-2"
+    class="flex flex-wrap items-center gap-2 px-3 py-2 last:rounded-b-xl
+            hover:bg-gray-300 dark:hover:bg-gray-600"
 >
-    <h3 class="h3 inline text-ellipsis overflow-hidden max-w-full whitespace-nowrap">
+    <h3 class="h3 inline max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
         {key.name}
     </h3>
     {#if key.secretKey}

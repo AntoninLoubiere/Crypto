@@ -1,17 +1,15 @@
 <script lang="ts">
     import { exportKey } from '$lib/crypto';
-    import { format } from '$lib/relativeTimeFormatter';
-    import { autoResetStore, autoResetStoreWithTimer } from '$lib/stores';
-    import { get } from 'svelte/store';
-
-    ('@hmr:keep-all');
+    import { autoResetStoreWithTimer } from '$lib/stores';
     import Modal from './Modal.svelte';
-    import Notecard from './Notecard.svelte';
+    import Notecard from '../Notecard.svelte';
+    import CopyButton from '../CopyButton.svelte';
+    ('@hmr:keep-all');
 
     export let cryptoKey: CryptoKey;
     export let exportModalOpened: boolean;
     let exportedText: string;
-    let doExportKey: boolean = false;
+    let doExportKey = false;
     let [exportDisabled, exportDisabledTime] = autoResetStoreWithTimer(false, 3);
 
     let formatter = new Intl.RelativeTimeFormat(undefined, { style: 'short' });
@@ -51,7 +49,7 @@
 </script>
 
 <Modal bind:opened={exportModalOpened}>
-    <span slot="title" class="whitespace-nowrap text-ellipsis">Exporter</span>
+    <span slot="title" class="text-ellipsis whitespace-nowrap">Exporter</span>
     <h3 class="h3 mb-2">
         {type == 'secret' ? 'Secret' : type == 'public' ? 'Clé publique' : 'Clé privée'} :
     </h3>
@@ -74,7 +72,8 @@
 
     {#if doExportKey}
         <pre
-            class="px-3 py-2  rounded-lg bg-gray-200 dark:bg-gray-700 max-w-full w-max m-auto">{exportedText}</pre>
+            class="m-auto w-max  max-w-full rounded-lg bg-gray-200 px-3 py-2 dark:bg-gray-700">{exportedText}</pre>
+        <CopyButton text={exportedText} />
     {:else}
         <button
             class="button-coloured bg-red-500 ring-red-500 mx-auto block"
@@ -85,7 +84,7 @@
                 : ''}</button
         >
     {/if}
-    <button class="button-coloured w-full" on:click={() => (exportModalOpened = false)}
-        >Fermer</button
-    >
+    <div class="flex flex-row-reverse">
+        <button class="button-text" on:click={() => (exportModalOpened = false)}>Fermer</button>
+    </div>
 </Modal>

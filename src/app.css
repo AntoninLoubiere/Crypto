@@ -5,11 +5,11 @@
 
 @layer utilities {
     .h1 {
-        @apply uppercase text-4xl font-semibold;
+        @apply text-4xl font-semibold uppercase;
     }
 
     .h3 {
-        @apply uppercase text-2xl font-semibold;
+        @apply text-2xl font-semibold uppercase;
     }
 }
 
@@ -19,22 +19,34 @@
     }
 
     .button {
-        @apply my-2 py-1 px-2 uppercase font-semibold outline-none rounded-md ring-primary
-            focus-visible:ring
-            hover:filter hover:brightness-110
+        @apply my-1 rounded-md py-1 px-2 font-semibold uppercase outline-none ring-primary
+            hover:brightness-110
+            hover:filter focus-visible:ring
             active:brightness-90
-            disabled:opacity-50
             disabled:cursor-not-allowed
+            disabled:opacity-50
             disabled:hover:brightness-100
             disabled:active:brightness-100;
     }
 
+    .button-text {
+        @apply button font-semibold uppercase text-primary hover:ring;
+    }
+
     .button-coloured {
-        @apply button bg-primary dark:bg-primary-800 text-white ring-offset-4
+        @apply button bg-primary text-white ring-offset-4 dark:bg-primary-800
             dark:ring-offset-gray-900;
     }
 
+    ._base-input {
+        @apply rounded-lg invalid:border-red-500 invalid:text-red-500 focus:ring-primary invalid:focus:border-transparent dark:bg-gray-800;
+    }
+
     .textarea {
-        @apply form-textarea focus:ring-primary dark:bg-gray-800 rounded-lg rounded-br-none;
+        @apply form-textarea _base-input rounded-br-none;
+    }
+
+    .input {
+        @apply _base-input form-input;
     }
 }

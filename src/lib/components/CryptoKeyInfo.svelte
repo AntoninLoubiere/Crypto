@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ExportModal from './ExportModal.svelte';
+    import ExportModal from './modals/ExportModal.svelte';
 
     ('@hmr:keep-all');
 
@@ -26,7 +26,7 @@
 </script>
 
 {#if cryptoKey}
-    <div class="w-full px-3 py-2 border-2 border-primary rounded-md">
+    <div class="w-full rounded-md border-2 border-primary px-3 py-2">
         <h3 class="h3 text-center">
             {type == 'secret' ? 'Secret' : type == 'public' ? 'Clé publique' : 'Clé privée'}
         </h3>

@@ -3,7 +3,7 @@
 </script>
 
 <div
-    class="text-xs px-2 py-1 uppercase border rounded-full"
+    class="rounded-full border px-2 py-1 text-xs uppercase"
     class:red={color == 'red'}
     class:blue={color == 'blue'}
     class:green={color == 'green'}
@@ -13,14 +13,14 @@
 
 <style>
     .red {
-        @apply text-red-500 bg-red-50 dark:bg-red-500 border-red-500 dark:bg-opacity-10;
+        @apply border-red-500 bg-red-50 text-red-500 dark:bg-red-500 dark:bg-opacity-10;
     }
 
     .blue {
-        @apply text-blue-500 bg-blue-50 dark:bg-blue-500 border-blue-500 dark:bg-opacity-10;
+        @apply border-blue-500 bg-blue-50 text-blue-500 dark:bg-blue-500 dark:bg-opacity-10;
     }
 
     .green {
-        @apply text-green-500 bg-green-50 dark:bg-green-500 border-green-500 dark:bg-opacity-10;
+        @apply border-green-500 bg-green-50 text-green-500 dark:bg-green-500 dark:bg-opacity-10;
     }
 </style>

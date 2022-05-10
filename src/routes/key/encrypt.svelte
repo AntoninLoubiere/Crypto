@@ -1,11 +1,13 @@
 <script lang="ts">
+    import CopyButton from '$lib/components/CopyButton.svelte';
+
     import { page } from '$app/stores';
 
     import { encrypt } from '$lib/crypto';
     import { autoResetStore } from '$lib/stores';
 
     let text: string;
-    let cipher: string = '';
+    let cipher = '';
     let textCopied = autoResetStore(false, 2000);
 
     async function onEncryptButton() {
@@ -22,11 +24,9 @@
     <title>Chiffrer - Crypto</title>
 </svelte:head>
 
-<textarea bind:value={text} class="textarea w-full h-52" />
-<button on:click={onEncryptButton} class="w-full button-coloured">Chiffrer</button>
-<p class="whitespace-pre-line font-mono w-max m-auto">{cipher}</p>
+<textarea bind:value={text} class="textarea h-52 w-full" />
+<button on:click={onEncryptButton} class="button-coloured w-full">Chiffrer</button>
 {#if cipher}
-    <button class="button-coloured w-full" on:click={copyCipher} class:bg-green-500={$textCopied}
-        >{$textCopied ? 'Copié !' : 'Copier'}</button
-    >
+    <p class="m-auto w-max whitespace-pre-line font-mono">{cipher}</p>
+    <CopyButton text={cipher} />
 {/if}

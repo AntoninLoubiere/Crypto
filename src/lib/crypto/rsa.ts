@@ -2,6 +2,7 @@ import { base64EncArr } from '$lib/utils';
 import { decryptDataRandomAES, encryptDataRandomAES } from './aes';
 import {
     CryptoError,
+    decodePEMAndSPKIFormats,
     mergeArraysFlags,
     PEM_END_BEACON,
     PEM_START_BEACON,
@@ -94,7 +95,48 @@ const methods: CryptoMethods = {
             password: options?.password || 'none',
             privateKey: cryptoKey.privateKey,
             publicKey: cryptoKey.publicKey,
-            keyId: 2,
+            creationDate: new Date(),
+            useDate: new Date(),
+        };
+    },
+
+    async importKey(
+        keys: { key: string; privateKey?: string | undefined },
+        name: string,
+        options?
+    ): Promise<CryptoKeyDB> {
+        const algo = {
+            name: 'RSA-OAEP',
+            modulusLength: options?.modulus || 4096,
+            publicExponent: new Uint8Array([1, 0, 1]),
+            hash: options?.hash || 'SHA-256',
+        };
+
+        const cryptoKey = await crypto.subtle.importKey(
+            'spki',
+            decodePEMAndSPKIFormats('spki', keys.key).buffer,
+            algo,
+            true,
+            options?.usages || ['encrypt']
+        );
+
+        let privateKey: CryptoKey | undefined;
+        if (keys.privateKey && keys.privateKey.length) {
+            privateKey = await crypto.subtle.importKey(
+                'pkcs8',
+                decodePEMAndSPKIFormats('pem', keys.privateKey).buffer,
+                algo,
+                true,
+                options?.usages || ['decrypt']
+            );
+        }
+
+        return {
+            algorithm: 'RSA-OAEP',
+            name,
+            password: options?.password || 'none',
+            publicKey: cryptoKey,
+            privateKey,
             creationDate: new Date(),
             useDate: new Date(),
         };

@@ -11,22 +11,22 @@
 
 {#if opened}
     <div
-        class="absolute top-0 bottom-0 left-0 right-0 bg-black bg-opacity-50 grid place-content-center"
+        class="absolute top-0 bottom-0 left-0 right-0 grid place-content-center bg-black bg-opacity-50"
         transition:fade={{ duration: 200 }}
         on:click|self={closePopup}
     >
-        <div class="w-screen max-h-screen md:p-4" on:click|self={closePopup}>
+        <div class="max-h-screen w-screen md:p-4" on:click|self={closePopup}>
             <div
-                class="m-auto w-full h-full max-w-4xl flex flex-col bg-gray-100 dark:bg-gray-800 md:w-auto md:rounded-xl"
+                class="m-auto flex h-full w-full max-w-4xl flex-col bg-gray-100 dark:bg-gray-800 md:w-auto md:rounded-xl"
                 transition:fly={{ y: -100, duration: 200 }}
             >
                 <header
-                    class="px-3 py-2 text-white text-center bg-primary dark:bg-primary-800 md:rounded-t-xl flex items-center"
+                    class="flex items-center bg-primary px-3 py-2 text-center text-white dark:bg-primary-800 md:rounded-t-xl"
                 >
                     <h1 class="h1 flex-grow"><slot name="title">Modal</slot></h1>
                     {#if closable}
                         <button
-                            class="h-8 w-8 rounded-full hover:bg-white hover:text-primary grid place-items-center"
+                            class="grid h-8 w-8 place-items-center rounded-full hover:bg-white hover:text-primary"
                             on:click={closePopup}
                         >
                             <svg
@@ -46,7 +46,7 @@
                         </button>
                     {/if}
                 </header>
-                <div class="px-3 py-2 h-full overflow-y-auto">
+                <div class="h-full overflow-y-auto px-3 py-2">
                     <slot />
                 </div>
             </div>

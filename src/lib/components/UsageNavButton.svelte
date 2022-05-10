@@ -12,13 +12,13 @@
     <a
         sveltekit:prefetch
         href="/key/{usage}?key={key.keyId}"
-        class="uppercase px-2 py-1"
+        class="px-2 py-1 uppercase"
         class:active><slot /></a
     >
 {/if}
 
 <style>
     .active {
-        @apply text-white bg-primary dark:bg-primary-800 rounded-lg;
+        @apply rounded-lg bg-primary text-white dark:bg-primary-800;
     }
 </style>

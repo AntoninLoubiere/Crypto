@@ -56,7 +56,24 @@ export async function generateKey(algorithm: string, name: string, options?: unk
     console.info('Generate key');
 
     const key = await algo.generateKey(name, options);
-    (await getDataBase()).add('cryptoKeys', key);
+    const db = await getDataBase();
+    key.keyId = await db.add('cryptoKeys', key);
+
+    return key;
+}
+
+export async function importKey(
+    algorithm: string,
+    keys: { key: string; privateKey?: string },
+    name: string,
+    options?: unknown
+) {
+    const algo = getAlgorithm(algorithm);
+    console.info('Generate key');
+
+    const key = await algo.importKey(keys, name, options);
+    const db = await getDataBase();
+    key.keyId = await db.add('cryptoKeys', key);
 
     return key;
 }
