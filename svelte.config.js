@@ -12,6 +12,7 @@ const config = {
     ],
 
     kit: {
+        appDir: 'internal',
         prerender: {
             default: true,
         },
