@@ -1,4 +1,4 @@
-import adapter from 'svelte-adapter-github';
+import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -12,8 +12,11 @@ const config = {
     ],
 
     kit: {
+        prerender: {
+            default: true,
+        },
         paths: { base: '/Crypto' },
-        adapter: adapter({ precompress: true }),
+        adapter: adapter({ pages: 'docs', assets: 'docs' }),
     },
 };
 
