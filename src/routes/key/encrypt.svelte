@@ -1,22 +1,13 @@
 <script lang="ts">
     import CopyButton from '$lib/components/CopyButton.svelte';
-
     import { page } from '$app/stores';
-
     import { encrypt } from '$lib/crypto';
-    import { autoResetStore } from '$lib/stores';
 
     let text: string;
     let cipher = '';
-    let textCopied = autoResetStore(false, 2000);
 
     async function onEncryptButton() {
         cipher = await encrypt(text, $page.stuff.key);
-    }
-
-    async function copyCipher() {
-        await navigator.clipboard.writeText(cipher);
-        $textCopied = true;
     }
 </script>
 

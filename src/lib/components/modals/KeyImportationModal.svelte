@@ -7,9 +7,9 @@
 
     export let opened: boolean;
 
-    let name: string = '';
-    let publicKey: string = '';
-    let privateKey: string = '';
+    let name = '';
+    let publicKey = '';
+    let privateKey = '';
     let importationInProgress = false;
     let nameInput: HTMLInputElement;
     $: isValid = !!name.length && publicKey.length;
@@ -32,7 +32,7 @@
                 },
                 name
             );
-            goto(`/key?key=${key.keyId}`);
+            goto(`/Crypto/key?key=${key.keyId}`);
         } finally {
             importationInProgress = false;
         }

@@ -2,7 +2,7 @@
     import { autoResetStore } from '$lib/stores';
 
     export let text: string;
-    export let resetTime: number = 2000;
+    export let resetTime = 2000;
     let textCopied = autoResetStore(false, resetTime);
 
     async function copyText() {

@@ -6,7 +6,7 @@
     import Modal from './Modal.svelte';
     export let opened: boolean;
 
-    let name: string = '';
+    let name = '';
     let nameInput: HTMLInputElement;
     $: isValid = !!name.length;
 
@@ -22,7 +22,7 @@
         generationInProgress = true;
         try {
             let key = await generateKey('RSA-OAEP', name);
-            goto(`/key?key=${key.keyId}`);
+            goto(`/Crypto/key?key=${key.keyId}`);
         } finally {
             generationInProgress = false;
         }

@@ -5,13 +5,13 @@
     export let key: CryptoKeyDB | undefined;
     export let usage: string;
 
-    $: active = $page.url.pathname == (usage ? '/key/' + usage : '/key');
+    $: active = $page.url.pathname == (usage ? '/Crypto/key/' + usage : '/Crypto/key');
 </script>
 
 {#if key && (!isUsage(usage) || isCompatible(key, usage))}
     <a
         sveltekit:prefetch
-        href="/key/{usage}?key={key.keyId}"
+        href="/Crypto/key/{usage}?key={key.keyId}"
         class="px-2 py-1 uppercase"
         class:active><slot /></a
     >

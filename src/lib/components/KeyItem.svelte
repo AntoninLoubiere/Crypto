@@ -6,7 +6,7 @@
 
 <a
     sveltekit:prefetch
-    href="/key/?key={key.keyId}"
+    href="/Crypto/key/?key={key.keyId}"
     class="flex flex-wrap items-center gap-2 px-3 py-2 last:rounded-b-xl
             hover:bg-gray-300 dark:hover:bg-gray-600"
 >
