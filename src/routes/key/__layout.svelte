@@ -12,7 +12,7 @@
         if (browser && !key) {
             return {
                 status: 302,
-                redirect: '/',
+                redirect: '/Crypto',
             };
         }
         return {

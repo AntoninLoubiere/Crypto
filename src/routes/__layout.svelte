@@ -7,7 +7,7 @@
         if (browser && !(crypto?.subtle && indexedDB)) {
             return {
                 status: 302,
-                redirect: '/error',
+                redirect: '/Crypto/error',
             };
         }
         return {};
@@ -20,7 +20,7 @@
 
 <header class="grid grid-cols-3 bg-primary text-white dark:bg-primary-800">
     <div class="m-2">Crypto</div>
-    {#if $page.url.pathname != '/'}
+    {#if $page.url.pathname != '/Crypto'}
         <a
             sveltekit:prefetch
             href="/Crypto/"
